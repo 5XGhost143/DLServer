@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FEHLER!</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --background-color: #f8f9fa;
+            --text-color: #212529;
+            --error-color: #e63946;
+            --success-color: #2a9d8f;
+            --box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--background-color), #e9ecef);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        #container {
+            width: 100%;
+            max-width: 450px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        #container:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--error-color), #d90429);
+            color: white;
+            padding: 25px 20px;
+            position: relative;
+        }
+
+        .header h2 {
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .content {
+            padding: 30px 25px;
+        }
+
+        .error-icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+            color: var(--error-color);
+        }
+
+        .error-message {
+            font-size: 1.5rem;
+            color: var(--error-color);
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .error-details {
+            color: var(--text-color);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(67, 97, 238, 0.3);
+        }
+
+        .back-button:active {
+            transform: translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            #container {
+                max-width: 100%;
+            }
+            
+            .header h2 {
+                font-size: 1.5rem;
+            }
+            
+            .error-message {
+                font-size: 1.3rem;
+            }
+            
+            .back-button {
+                padding: 12px 25px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        #container {
+            animation: fadeIn 0.5s ease-out forwards, shake 0.8s ease-in-out 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="header">
+            <h2>Download Fehler</h2>
+        </div>
+        <div class="content">
+            <div class="error-icon">❌</div>
+            <div class="error-message">Kein gültiger Download Link</div>
+            <p class="error-details">
+                Der von Ihnen angeforderte Download-Link ist ungültig oder abgelaufen. 
+                Bitte überprüfen Sie die URL oder kontaktieren Sie den Administrator.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
