@@ -1,0 +1,9 @@
+{
+    "downloads": [
+        {
+            "site_url": "example1",
+            "FILENAME": "Example.txt",
+            "correct_password": "pass123"
+        }
+    ]
+}
