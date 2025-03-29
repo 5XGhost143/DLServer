@@ -1,22 +1,36 @@
 from flask import Flask, request, send_from_directory, redirect, url_for, render_template, session
 import os
 import json
+import threading
+import time
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)  # Secret key for session encryption
 
-# Lade Konfiguration aus downloads.json
-with open('downloads.json', 'r') as config_file:
-    config = json.load(config_file)
+config = {}
+config_map = {}
 
-# Erstelle ein Dictionary, das site_url zu Konfigurationen mappt
-config_map = {item['site_url']: item for item in config['downloads']}
-DOWNLOAD_FOLDER = "files"  # Fester Download-Ordner
+def load_config():
+    global config, config_map
+    with open('downloads.json', 'r') as config_file:
+        config = json.load(config_file)
+    config_map = {item['site_url']: item for item in config['downloads']}
+
+load_config()
+
+DOWNLOAD_FOLDER = "files"
+
+def watch_for_changes():
+    while True:
+        time.sleep(10)  
+        load_config()  
+
+threading.Thread(target=watch_for_changes, daemon=True).start()
 
 @app.route('/<site_url>', methods=['GET', 'POST'])
 def index(site_url):
     if site_url not in config_map:
-        return "Site not found", 404
+        return render_template('error.html'), 404
     
     download_config = config_map[site_url]
     filename = download_config['FILENAME']
@@ -24,7 +38,7 @@ def index(site_url):
     if request.method == 'POST':
         entered_password = request.form['password']
         if entered_password == download_config['correct_password']:
-            session['authenticated'] = site_url  # Set site_url in session
+            session['authenticated'] = site_url  
             return redirect(url_for('download_file', site_url=site_url))
         else:
             return render_template('index.html', filename=filename, error="Wrong!")
@@ -42,9 +56,9 @@ def download_file(site_url):
             download_config = config_map[site_url]
             return send_from_directory(DOWNLOAD_FOLDER, download_config['FILENAME'], as_attachment=True)
         else:
-            return "Site not found", 404
+            return render_template('error.html'), 404
     else:
-        return redirect(url_for('index', site_url=site_url))  # Redirect to login page if not authenticated
+        return redirect(url_for('index', site_url=site_url))  
 
 if __name__ == '__main__':
     app.run(
